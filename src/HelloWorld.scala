@@ -1,5 +1,16 @@
 object HelloWorld {
   def main(args: Array[String]): Unit = {
-    println("Hello World")
+
+    val droneMsg = DroneMsg(
+      1,
+      Location(14.0,15.5),
+      List(
+        Citizen(1,"name1","firstname1"),
+        Citizen(2,"name2","firstname2")
+      ),
+      List("Hello","World")
+    )
+
+    println(droneMsg)
   }
 }
