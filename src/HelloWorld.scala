@@ -7,8 +7,8 @@ object HelloWorld {
       1,
       Location(14.0,15.5),
       List(
-        Citizen(1,randomName(5).toString, randomName(5).toString),
-        Citizen(2,randomName(5).toString, randomName(5).toString)
+        Citizen(1,randomName(), randomName()),
+        Citizen(2,randomName(), randomName())
       ),
       List("Hello","World")
     )
@@ -17,13 +17,7 @@ object HelloWorld {
     //val x = List.fill(1000)(droneMsg);
   }
 
-  def randomName(length: Int): String = {
-    var nom: String = null;
-    if(length == 1) {
-      return new Random().nextPrintableChar().toString();
-    } else {
-      var a = new Random().nextPrintableChar().toString() + randomName(length - 1);
-      return (a);
-    }
+  def randomName(): String = {
+    Random.alphanumeric.dropWhile(_.isDigit).toString();
   }
 }
