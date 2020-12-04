@@ -11,8 +11,8 @@ object HelloWorld {
       ),
       List("Hello","World")
     )
-    val x = List.fill(1000)(droneMsg)
+    val messages = List.fill(1000)(droneMsg)
     val writer = new PrintWriter(new File("List.csv"))
-    x.foreach(x => writer.write(x.toString + "\n"))
+    messages.foreach(x => writer.write(messages.toString + "\n"))
   }
 }
