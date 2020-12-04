@@ -1,16 +1,18 @@
 object HelloWorld {
   def main(args: Array[String]): Unit = {
 
-    val droneMsg = DroneMsg(
-      1,
+    val citizenReport = CitizenReport(
+      Citizen(1,"name1","firstname1"),
       Location(14.0,15.5),
-      List(
-        Citizen(1,"name1","firstname1"),
-        Citizen(2,"name2","firstname2")
-      ),
-      List("Hello","World")
+      14
     )
 
-    println(droneMsg)
+    val droneReport = DroneReport(
+      1,
+      List("Hello","Word"),
+      List(citizenReport,citizenReport)
+    )
+
+    println(DroneReport.getDroneReportCSV(droneReport))
   }
 }
