@@ -1,3 +1,5 @@
+import java.io.{File, PrintWriter}
+
 object HelloWorld {
   def main(args: Array[String]): Unit = {
 
@@ -5,12 +7,12 @@ object HelloWorld {
       1,
       Location(14.0,15.5),
       List(
-        Citizen(1,"name1","firstname1"),
-        Citizen(2,"name2","firstname2")
+        Citizen(1,"name1","firstname1")
       ),
       List("Hello","World")
     )
-
-    println(droneMsg)
+    val x = List.fill(1000)(droneMsg)
+    val writer = new PrintWriter(new File("List.csv"))
+    x.foreach(x => writer.write(x.toString + "\n"))
   }
 }
