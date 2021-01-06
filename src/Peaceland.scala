@@ -6,13 +6,13 @@ object Peaceland {
 
     val citizenReport = CitizenReport(
       Citizen(1, randomString(10), randomString(10)),
-      Location(14.0, 15.5),
-      14
+      Random.between(1, 10),
     )
 
     val droneReport = DroneReport(
       1,
-      List("Hello", "Word"),
+      List("Peace", "Watcher"),
+      Location(Random.between(-90.0, 90.0), Random.between(-180.0, 180.0)),
       List.fill(1000)(citizenReport)
     )
 
@@ -27,8 +27,8 @@ object Peaceland {
   }
 
   def randomChar(): String = {
-    val min = 65;
-    val max = 90;
-    (Random.nextInt(max-min) + min).toChar.toString;
+    val min = 65
+    val max = 90
+    (Random.nextInt(max-min) + min).toChar.toString
   }
 }

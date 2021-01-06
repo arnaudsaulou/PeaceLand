@@ -1,13 +1,12 @@
-case class CitizenReport (citizen : Citizen, location : Location, happinessLevel: Int);
+case class CitizenReport (citizen : Citizen, happinessLevel: Int)
 
 object CitizenReport{
 
-  def apply(citizen : Citizen, location : Location, happinessLevel: Int): CitizenReport
-  = new CitizenReport(citizen, location, happinessLevel)
+  def apply(citizen : Citizen, happinessLevel: Int): CitizenReport
+  = new CitizenReport(citizen, happinessLevel)
 
   def getCitizenReportCSV(citizenReport: CitizenReport): String = {
-    Citizen.getCitizenCSV(citizenReport.citizen)+
-      ";" + Location.getLocationCSV(citizenReport.location) +
+    Citizen.getCitizenCSV(citizenReport.citizen) +
       ";" + citizenReport.happinessLevel.toString
   }
 
