@@ -3,13 +3,13 @@ case class DroneReport(
                         wordCaught: List[String],
                         location : Location,
                         citizenReports: List[CitizenReport],
-                        day : String,
+                        day : WeekDays.Value,
                         micIsWorking : Boolean
                       )
 
 object DroneReport{
 
-  def apply(idDrone: Int, wordCaught: List[String], location : Location, citizenReports: List[CitizenReport], day : String, micIsWorking : Boolean): DroneReport
+  def apply(idDrone: Int, wordCaught: List[String], location : Location, citizenReports: List[CitizenReport], day : WeekDays.Value, micIsWorking : Boolean): DroneReport
   = new DroneReport(idDrone, wordCaught, location, citizenReports, day, micIsWorking)
 
   def getDroneReportCSV(droneReport: DroneReport): String = {
@@ -19,4 +19,8 @@ object DroneReport{
       citizenReport => CitizenReport.getCitizenReportCSV(citizenReport)).mkString("\n")
   }
 
+}
+
+object WeekDays extends Enumeration {
+  val Mon,Tue,Wed,Thu,Fri = Value
 }
