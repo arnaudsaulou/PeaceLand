@@ -19,7 +19,7 @@ object DroneReport {
       ";" + droneReport.wordCaught.mkString(";")
   }
 
-  /*def parseFromCSV(droneReportCSV: Iterator[String]): Iterator[DroneReport] = {
+  def parseFromCSV(droneReportCSV: Iterator[String]): Iterator[DroneReport] = {
 
     droneReportCSV.map(
       droneReportLine => {
@@ -36,5 +36,6 @@ object DroneReport {
       }
     )
 
-  }*/
+  }
+
 }

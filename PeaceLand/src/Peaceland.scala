@@ -99,7 +99,7 @@ object Peaceland {
     start + (end - start) * Random.nextDouble()
   }
 
-  /*private def loadCitizenReport(): RDD[CitizenReport] = {
+  private def loadCitizenReport(): RDD[CitizenReport] = {
     val conf = new SparkConf().setAppName("PeaceLand").setMaster("local[*]")
     val sc = SparkContext.getOrCreate(conf)
     sc.textFile(pathToCitizenReports).mapPartitions(CitizenReport.parseFromCSV)
@@ -109,9 +109,9 @@ object Peaceland {
     val conf = new SparkConf().setAppName("PeaceLand").setMaster("local[*]")
     val sc = SparkContext.getOrCreate(conf)
     sc.textFile(pathToDroneReports).mapPartitions(DroneReport.parseFromCSV)
-  }*/
+  }
 
   private def stat1(): Unit = {
-    //loadDroneReport().map((_,1)).reduceByKey(_+_)
+    loadDroneReport().map((_,1)).reduceByKey(_+_)
   }
 }
