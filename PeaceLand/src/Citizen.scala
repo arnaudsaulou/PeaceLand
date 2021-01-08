@@ -8,4 +8,13 @@ object Citizen{
       ";" + citizen.firstnameCitizen
   }
 
+  def parseFromCSV(citizenCSV: String):Citizen = {
+    val citizenSplit = citizenCSV.split(";")
+    Citizen(
+      Integer.parseInt(citizenSplit(0)),
+      citizenSplit(1),
+      citizenSplit(2)
+    )
+  }
+
 }

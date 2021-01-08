@@ -1,3 +1,6 @@
+import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.rdd.RDD
+
 import java.io.{File, PrintWriter}
 import scala.util.Random
 
@@ -8,6 +11,7 @@ object Peaceland {
 
   def main(args: Array[String]): Unit = {
     generateFakeData()
+    //loadCitizenReport()
   }
 
   private def generateFakeData(): Unit = {
@@ -77,4 +81,10 @@ object Peaceland {
   private def randomBetweenDouble(start: Double, end: Double): Double = {
     start + (end - start) * Random.nextDouble()
   }
+
+  /*private def loadCitizenReport(): RDD[CitizenReport] = {
+    val conf = new SparkConf().setAppName("PeaceLand").setMaster("local[*]")
+    val sc = SparkContext.getOrCreate(conf)
+    sc.textFile(pathToCitizenReports).mapPartitions(CitizenReport.parseFromCSV(_))
+  }*/
 }
