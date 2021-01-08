@@ -2,28 +2,55 @@ import java.io.{File, PrintWriter}
 import scala.util.Random
 
 object Peaceland {
+
+  val pathToDroneReports = "../data/DroneReports.csv"
+  val pathToCitizenReports = "../data/CitizenReports.csv"
+
   def main(args: Array[String]): Unit = {
-
-    val droneReport = DroneReport(
-      1,
-      List("Peace", "Watcher"),
-      Location(Random.between(-90.0, 90.0), Random.between(-180.0, 180.0)),
-      List.tabulate(1000)(citizenID => GenerateCitizenReport(citizenID))
-    )
-
-    val writer = new PrintWriter(new File("ReportDrone.csv"))
-    writer.write(DroneReport.getDroneReportCSV(droneReport))
-
+    generateFakeData()
   }
 
-  private def GenerateCitizenReport(citizenID : Int) = {
+  private def generateFakeData(): Unit = {
+    val droneReports = List.tabulate(1000)(droneReportId => generateDroneReport(droneReportId))
+
+    val writerDroneReports = new PrintWriter(new File(pathToDroneReports))
+    droneReports.foreach(droneReport => writerDroneReports.write(DroneReport.getDroneReportCSV(droneReport) + "\n"))
+    writerDroneReports.close()
+
+    val writerCitizenReports = new PrintWriter(new File(pathToCitizenReports))
+    droneReports.foreach(droneReport =>
+      droneReport.citizenReports.map(
+        citizenReport => CitizenReport.getCitizenReportCSV(citizenReport)).mkString("\n")
+    )
+    writerCitizenReports.close()
+  }
+
+  private def generateDroneReport(droneReportId: Int): DroneReport = {
+    DroneReport(
+      droneReportId,
+      randomBetweenInt(1, 10), //Id drone
+      generateWordsList(),
+      Location(randomBetweenDouble(-90.0, 90.0), randomBetweenDouble(-180.0, 180.0)),
+      List.tabulate(1000)(citizenID => generateCitizenReport(droneReportId, citizenID)),
+      WeekDays.Fri,
+      micIsWorking = randomMicDown()
+    )
+  }
+
+  private def generateCitizenReport(reportID: Int, citizenID: Int): CitizenReport = {
     CitizenReport(
-      Citizen(citizenID+1, randomString(10), randomString(10)),
-      Random.between(1, 10),
+      reportID,
+      Citizen((citizenID + 1), randomString(10), randomString(10)),
+      randomBetweenInt(1, 10)
     )
   }
 
-  private def randomString(length: Int): String = length match{
+  private def generateWordsList():List[String] = {
+    val nbWords = randomBetweenInt(10, 1000)
+    List.fill(nbWords)(randomString(randomBetweenInt(3,10)))
+  }
+
+  private def randomString(length: Int): String = length match {
     case 0 => "";
     case _ => randomString(length - 1) + randomChar();
   }
@@ -31,6 +58,23 @@ object Peaceland {
   private def randomChar(): String = {
     val min = 65
     val max = 90
-    (Random.nextInt(max-min) + min).toChar.toString
+    (Random.nextInt(max - min) + min).toChar.toString
+  }
+
+  private def randomMicDown(): Boolean = {
+    val micDownProba = randomBetweenInt(0,100)
+    if(micDownProba < 15){
+      true
+    } else {
+      false
+    }
+  }
+
+  private def randomBetweenInt(start: Int, end: Int): Int = {
+    start + Random.nextInt((end - start) + 1)
+  }
+
+  private def randomBetweenDouble(start: Double, end: Double): Double = {
+    start + (end - start) * Random.nextDouble()
   }
 }
