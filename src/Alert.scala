@@ -7,6 +7,6 @@ object Alert{
   = new Alert(citizenID)
 
  def getAlertCSV(alert: Alert): String = {
-   alert.citizenID + ";\n"
+   alert.citizenID + ""
  }
 }
