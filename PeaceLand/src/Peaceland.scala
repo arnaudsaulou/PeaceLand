@@ -6,21 +6,15 @@ import scala.util.Random
 
 object Peaceland {
 
-
   val pathToDroneReports = "../data/DroneReports.csv"
   val pathToCitizenReports = "../data/CitizenReports.csv"
 
   def main(args: Array[String]): Unit = {
     generateFakeData()
     //loadCitizenReport()
-
-    val unhappyCitizen = droneReport.citizenReports.filter(citizenReport => citizenReport.happinessLevel < 3)
-    val writerAlert = new PrintWriter(new File("Alert.csv"))
-    unhappyCitizen.foreach(citizenReport => writerAlert.write(Alert.getAlertCSV(new Alert(citizenReport.citizen.idCitizen))))
-    writerAlert.close()
   }
 
-  private def generateFakeData(): Unit = {
+  private def generateFakeData(): Unit= {
     val droneReports = List.tabulate(1000)(droneReportId => generateDroneReport(droneReportId))
 
     val writerDroneReports = new PrintWriter(new File(pathToDroneReports))
@@ -33,6 +27,15 @@ object Peaceland {
         citizenReport => CitizenReport.getCitizenReportCSV(citizenReport)).mkString("\n")
     )
     writerCitizenReports.close()
+
+    droneReports.foreach(droneReport => lookForUnhappyCitizen(droneReport))
+  }
+
+  private def lookForUnhappyCitizen(droneReport: DroneReport): Unit = {
+    val unhappyCitizen = droneReport.citizenReports.filter(citizenReport => citizenReport.happinessLevel < 3)
+    val writerAlert = new PrintWriter(new File("Alert.csv"))
+    unhappyCitizen.foreach(citizenReport => writerAlert.write(Alert.getAlertCSV(new Alert(citizenReport.citizen.idCitizen))))
+    writerAlert.close()
   }
 
   private def generateDroneReport(droneReportId: Int): DroneReport = {
@@ -51,7 +54,6 @@ object Peaceland {
     CitizenReport(
       reportID,
       Citizen((citizenID + 1), randomString(10), randomString(10)),
-      randomBetweenInt(1, 10),
       randomBetweenInt(1, 10)
     )
   }
