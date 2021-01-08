@@ -18,9 +18,4 @@ object DroneReport{
       ";\n" + droneReport.citizenReports.map(
       citizenReport => CitizenReport.getCitizenReportCSV(citizenReport)).mkString("\n")
   }
-
-}
-
-object WeekDays extends Enumeration {
-  val Mon,Tue,Wed,Thu,Fri = Value
 }
