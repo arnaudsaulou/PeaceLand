@@ -8,13 +8,14 @@ object Peaceland {
 
   val pathToDroneReports = "../data/DroneReports.csv"
   val pathToCitizenReports = "../data/CitizenReports.csv"
+  val pathToAlerts = "../data/Alerts.csv"
 
   def main(args: Array[String]): Unit = {
     generateFakeData()
-    //loadCitizenReport()
+    stat1()
   }
 
-  private def generateFakeData(): Unit= {
+  private def generateFakeData(): Unit = {
     val droneReports = List.tabulate(1000)(droneReportId => generateDroneReport(droneReportId))
 
     val writerDroneReports = new PrintWriter(new File(pathToDroneReports))
@@ -23,19 +24,26 @@ object Peaceland {
 
     val writerCitizenReports = new PrintWriter(new File(pathToCitizenReports))
     droneReports.foreach(droneReport =>
-      droneReport.citizenReports.map(
-        citizenReport => CitizenReport.getCitizenReportCSV(citizenReport)).mkString("\n")
+      droneReport.citizenReports.foreach(
+        citizenReport => writerCitizenReports.write(CitizenReport.getCitizenReportCSV(citizenReport) + "\n"))
     )
     writerCitizenReports.close()
 
-    droneReports.foreach(droneReport => lookForUnhappyCitizen(droneReport))
+    val writerAlert = new PrintWriter(new File(pathToAlerts))
+    droneReports.foreach(droneReport => lookForUnhappyCitizen(droneReport, writerAlert))
+    writerAlert.close()
+
   }
 
-  private def lookForUnhappyCitizen(droneReport: DroneReport): Unit = {
+  private def lookForUnhappyCitizen(droneReport: DroneReport, writerAlert: PrintWriter): Unit = {
     val unhappyCitizen = droneReport.citizenReports.filter(citizenReport => citizenReport.happinessLevel < 3)
-    val writerAlert = new PrintWriter(new File("Alert.csv"))
-    unhappyCitizen.foreach(citizenReport => writerAlert.write(Alert.getAlertCSV(new Alert(citizenReport.citizen.idCitizen))))
-    writerAlert.close()
+    unhappyCitizen.foreach(
+      citizenReport => writerAlert.write(
+        citizenReport.droneReportId +
+          ";" + Alert.getAlertCSV(new Alert(citizenReport.citizen.idCitizen))
+      )
+    )
+    writerAlert.write("\n")
   }
 
   private def generateDroneReport(droneReportId: Int): DroneReport = {
@@ -58,9 +66,9 @@ object Peaceland {
     )
   }
 
-  private def generateWordsList():List[String] = {
+  private def generateWordsList(): List[String] = {
     val nbWords = randomBetweenInt(10, 1000)
-    List.fill(nbWords)(randomString(randomBetweenInt(3,10)))
+    List.fill(nbWords)(randomString(randomBetweenInt(3, 10)))
   }
 
   private def randomString(length: Int): String = length match {
@@ -75,8 +83,8 @@ object Peaceland {
   }
 
   private def randomMicDown(): Boolean = {
-    val micDownProba = randomBetweenInt(0,100)
-    if(micDownProba < 15){
+    val micDownProba = randomBetweenInt(0, 100)
+    if (micDownProba < 15) {
       true
     } else {
       false
@@ -94,6 +102,16 @@ object Peaceland {
   /*private def loadCitizenReport(): RDD[CitizenReport] = {
     val conf = new SparkConf().setAppName("PeaceLand").setMaster("local[*]")
     val sc = SparkContext.getOrCreate(conf)
-    sc.textFile(pathToCitizenReports).mapPartitions(CitizenReport.parseFromCSV(_))
+    sc.textFile(pathToCitizenReports).mapPartitions(CitizenReport.parseFromCSV)
+  }
+
+  private def loadDroneReport(): RDD[DroneReport] = {
+    val conf = new SparkConf().setAppName("PeaceLand").setMaster("local[*]")
+    val sc = SparkContext.getOrCreate(conf)
+    sc.textFile(pathToDroneReports).mapPartitions(DroneReport.parseFromCSV)
   }*/
+
+  private def stat1(): Unit = {
+    //loadDroneReport().map((_,1)).reduceByKey(_+_)
+  }
 }

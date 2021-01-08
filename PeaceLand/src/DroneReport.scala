@@ -19,16 +19,22 @@ object DroneReport {
       ";" + droneReport.wordCaught.mkString(";")
   }
 
-  def parseFromCSV(droneReportCSV: String): DroneReport = {
-    val droneReportSplit = droneReportCSV.split(";")
-    DroneReport(
-      Integer.parseInt(droneReportSplit(0)),
-      Integer.parseInt(droneReportSplit(1)),
-      droneReportSplit.takeWhile(s => s != null).toList,
-      Location.parseFromCSV(droneReportSplit(2)),
-      null,
-      WeekDays.withName(droneReportSplit(3)),
-      droneReportSplit(4).toBoolean
+  /*def parseFromCSV(droneReportCSV: Iterator[String]): Iterator[DroneReport] = {
+
+    droneReportCSV.map(
+      droneReportLine => {
+        val droneReportSplit = droneReportLine.split(";")
+        DroneReport(
+          Integer.parseInt(droneReportSplit(0)),
+          Integer.parseInt(droneReportSplit(1)),
+          droneReportSplit.takeWhile(s => s != null).toList,
+          Location.parseFromCSV(droneReportSplit(2)),
+          null,
+          WeekDays.withName(droneReportSplit(3)),
+          droneReportSplit(4).toBoolean
+        )
+      }
     )
-  }
+
+  }*/
 }
